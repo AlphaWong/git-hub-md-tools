@@ -17,6 +17,9 @@ var (
 		STAR: "stargazers_count",
 		FORK: "forks_count",
 	}
+
+	clientId     = os.Getenv("github-client-id")
+	clientSecret = os.Getenv("github-client-secret")
 )
 
 const (
@@ -49,7 +52,7 @@ func repo(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 }
 
 func sendGitHubAPI(username string, reponame string) (githubResp map[string]interface{}) {
-	resp, err := http.Get("https://api.github.com/repos/" + username + "/" + reponame)
+	resp, err := http.Get("https://api.github.com/repos/" + username + "/" + reponame + "?client_id=" + clientId + "&client_secret=" + clientSecret)
 	if err != nil {
 		log.Fatal("githubResp:", err)
 	}
