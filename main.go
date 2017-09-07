@@ -18,8 +18,8 @@ var (
 		FORK: "forks_count",
 	}
 
-	clientId     = os.Getenv("github-client-id")
-	clientSecret = os.Getenv("github-client-secret")
+	clientId     = os.Getenv("GITHUB_CLIENT_ID")
+	clientSecret = os.Getenv("GITHUB_CLIENT_SECRET")
 )
 
 const (
