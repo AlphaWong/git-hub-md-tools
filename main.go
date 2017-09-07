@@ -27,7 +27,7 @@ const (
 func main() {
 	r := httprouter.New()
 	r.GET("/info/:username/:reponame/:propname", repo)
-	err := http.ListenAndServe(":8080", r)
+	err := http.ListenAndServe(":80", r)
 	if err != nil {
 		log.Fatal("ListenAndServe:", err)
 	}
