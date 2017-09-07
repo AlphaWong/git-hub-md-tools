@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/ajstarks/svgo"
 	"github.com/julienschmidt/httprouter"
 	"log"
@@ -12,7 +13,7 @@ import (
 
 var (
 	width  = 100
-	height = 20
+	height = 40
 
 	propMap = map[string]string{
 		STAR: "stargazers_count",
@@ -30,8 +31,8 @@ const (
 
 func main() {
 	r := httprouter.New()
-	r.GET("/info/:username/:reponame/:propname", repo)
-	err := http.ListenAndServe(":80", r)
+	r.GET("/info/:username/:reponame/", repo)
+	err := http.ListenAndServe(":8080", r)
 	if err != nil {
 		log.Fatal("ListenAndServe:", err)
 	}
@@ -39,16 +40,22 @@ func main() {
 
 func repo(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	w.Header().Set("Content-Type", "image/svg+xml")
-	propname := ps.ByName("propname")
 	githubResp := sendGitHubAPI(
 		ps.ByName("username"),
 		ps.ByName("reponame"),
 	)
-	f := githubResp[propMap[propname]].(float64)
-	msg := strconv.FormatFloat(f, 'f', -1, 64)
+	msg := strconv.FormatFloat(githubResp[propMap[STAR]].(float64), 'f', -1, 64)
+
 	s := svg.New(w)
 	s.Start(width, height)
-	s.Text(0, 15, msg, "text-anchor:start;font-family:monospace;")
+	msg = fmt.Sprintf("Star: %s", msg)
+	s.Text(4, 14, msg, "text-anchor:start;font-family:monospace;")
+
+	msg = strconv.FormatFloat(githubResp[propMap[FORK]].(float64), 'f', -1, 64)
+
+	msg = fmt.Sprintf("Fork: %s", msg)
+	s.Text(4, 28, msg, "text-anchor:start;font-family:monospace;")
+
 	s.End()
 }
 
