@@ -40,6 +40,9 @@ func main() {
 
 func repo(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	w.Header().Set("Content-Type", "image/svg+xml")
+	w.Header().Set("Vary", "Accept-Encoding")
+	w.Header().Set("Cache-Control", "public, max-age=5400")
+
 	githubResp := sendGitHubAPI(
 		ps.ByName("username"),
 		ps.ByName("reponame"),
