@@ -12,8 +12,8 @@ import (
 )
 
 var (
-	width  = 100
-	height = 40
+	width  = 140
+	height = 60
 
 	propMap = map[string]string{
 		STAR: "stargazers_count",
@@ -49,12 +49,12 @@ func repo(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	s := svg.New(w)
 	s.Start(width, height)
 	msg = fmt.Sprintf("Star: %s", msg)
-	s.Text(4, 14, msg, "text-anchor:start;font-family:monospace;")
+	s.Text(4, 14, msg, "text-anchor:start;font-family:monospace;font-size: larger;")
 
 	msg = strconv.FormatFloat(githubResp[propMap[FORK]].(float64), 'f', -1, 64)
 
 	msg = fmt.Sprintf("Fork: %s", msg)
-	s.Text(4, 28, msg, "text-anchor:start;font-family:monospace;")
+	s.Text(4, 28, msg, "text-anchor:start;font-family:monospace;font-size: larger;")
 
 	s.End()
 }
